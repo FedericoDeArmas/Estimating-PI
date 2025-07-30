@@ -1,13 +1,15 @@
-﻿const int PRECISION = 10000;
+﻿const int totalPoints = 10_000_000;
+int insideCircle = 0;
+Random rng = new();
 
-double result = 0;
-double distanceBetweenPoints = 1.0 / PRECISION;
-(double x, double y) currentPoint = (0, 1);
-while (currentPoint.x + distanceBetweenPoints <= 1)
+for (int i = 0; i < totalPoints; i++)
 {
-    double nextX = currentPoint.x + distanceBetweenPoints;
-    double nextY = Math.Sqrt(1 - Math.Pow(nextX, 2));
-    result += Math.Sqrt(Math.Pow(currentPoint.x - nextX, 2) + Math.Pow(currentPoint.y - nextY, 2));
-    currentPoint = (nextX, nextY);
-    Console.WriteLine($"Current π estimation: {result * 2}");
+    double x = rng.NextDouble();
+    double y = rng.NextDouble();
+
+    if (x * x + y * y <= 1.0)
+        insideCircle++;
 }
+
+double piEstimate = (double)insideCircle / totalPoints * 4;
+Console.WriteLine($"Monte Carlo π estimation: {piEstimate:F10}");
