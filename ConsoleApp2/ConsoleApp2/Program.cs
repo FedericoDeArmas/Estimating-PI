@@ -1,13 +1,25 @@
-﻿const int PRECISION = 10000;
+﻿const int precision = 10_000;
+double totalLength = 0;
+double stepSize = 1.0 / precision;
+double currentX = 0;
+double currentY = 1;
 
-double result = 0;
-double distanceBetweenPoints = 1.0 / PRECISION;
-(double x, double y) currentPoint = (0, 1);
-while (currentPoint.x + distanceBetweenPoints <= 1)
+for (int i = 0; i < precision; i++)
 {
-    double nextX = currentPoint.x + distanceBetweenPoints;
-    double nextY = Math.Sqrt(1 - Math.Pow(nextX, 2));
-    result += Math.Sqrt(Math.Pow(currentPoint.x - nextX, 2) + Math.Pow(currentPoint.y - nextY, 2));
-    currentPoint = (nextX, nextY);
-    Console.WriteLine($"Current π estimation: {result * 2}");
+    double nextX = currentX + stepSize;
+    double nextY = Math.Sqrt(1 - nextX * nextX);
+    double dx = nextX - currentX;
+    double dy = nextY - currentY;
+    totalLength += Math.Sqrt(dx * dx + dy * dy);
+
+    // Optional: Show progress every 1000 steps
+    if (i % 1000 == 0)
+    {
+        Console.WriteLine($"Current π estimation: {totalLength * 2:F6}");
+    }
+
+    currentX = nextX;
+    currentY = nextY;
 }
+
+Console.WriteLine($"\nFinal π estimation: {totalLength * 2:F10}");
